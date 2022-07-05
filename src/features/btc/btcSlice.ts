@@ -48,7 +48,8 @@ export const btcSlice = createSlice({
 			state.durationFilter = action.payload;
 			if (action.payload === DurationFilterPeriod.DAY) {
 				state.displayedHistoricalPrice = state.historicalPrice.slice(
-					-2 * DAYS_IN_WEEK
+					0,
+					3 * DAYS_IN_WEEK
 				);
 			} else if (action.payload === DurationFilterPeriod.WEEK) {
 				let pricesEveryWeek = [];
@@ -74,7 +75,10 @@ export const btcSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(getBtcPriceHistory.fulfilled, (state, action) => {
 			state.historicalPrice = action.payload;
-			state.displayedHistoricalPrice = action.payload.slice(-2 * DAYS_IN_WEEK);
+			state.displayedHistoricalPrice = action.payload.slice(
+				0,
+				3 * DAYS_IN_WEEK
+			);
 		});
 	},
 });
