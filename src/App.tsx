@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import ChartContainer from "./containers/Chart";
 import NewsContainer from "./containers/News";
 import SpotPriceContainer from "./containers/SpotPrice";
