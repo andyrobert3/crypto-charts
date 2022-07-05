@@ -43,6 +43,27 @@ export const btcSlice = createSlice({
 	reducers: {
 		setDurationFilter(state, action: PayloadAction<DurationFilterPeriod>) {
 			state.durationFilter = action.payload;
+			if (action.payload === DurationFilterPeriod.DAY) {
+				state.displayedHistoricalPrice = state.historicalPrice;
+			} else if (action.payload === DurationFilterPeriod.WEEK) {
+				let pricesEveryWeek = [];
+				for (let i = 1; i <= state.historicalPrice.length; i++) {
+					if (i % 7 === 0) {
+						pricesEveryWeek.push(
+							state.historicalPrice[state.historicalPrice.length - i]
+						);
+					}
+				}
+				state.displayedHistoricalPrice = pricesEveryWeek;
+			} else if (action.payload === DurationFilterPeriod.MONTH) {
+				let pricesEveryMonth = [];
+				for (let i = 0; i < state.historicalPrice.length; i++) {
+					if (i % 30 === 0) {
+						pricesEveryMonth.push(state.historicalPrice[i]);
+					}
+				}
+				state.displayedHistoricalPrice = pricesEveryMonth;
+			}
 		},
 	},
 	extraReducers: (builder) => {
