@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
-import btcReducer from "../features/btc/btcSlice";
+import bchReducer from "../features/bch/bchSlice";
 
 export const store = configureStore({
 	reducer: {
 		counter: counterReducer,
-		btcPrices: btcReducer,
+		bchPrices: bchReducer,
 	},
 });
 

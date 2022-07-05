@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getBtcCurrentPrice, getBtcPriceHistory } from "./btcThunk";
+import { getBchCurrentPrice, getBchPriceHistory } from "./bchThunk";
 
 const DAYS_IN_WEEK = 7;
 
@@ -9,22 +9,22 @@ export enum DurationFilterPeriod {
 	MONTH = "month",
 }
 
-export type BtcPrice = {
+export type BchPrice = {
 	price: number;
 	// milliseconds since epoch
 	timestamp: number;
 };
 
-export interface BtcSlice {
-	historicalPrice: BtcPrice[];
-	currentPrice: BtcPrice | null;
+export interface BchSlice {
+	historicalPrice: BchPrice[];
+	currentPrice: BchPrice | null;
 
 	// "24hr"/"7d"/"30d"
-	displayedHistoricalPrice: BtcPrice[];
+	displayedHistoricalPrice: BchPrice[];
 	durationFilter: DurationFilterPeriod;
 }
 
-const initialState: BtcSlice = {
+const initialState: BchSlice = {
 	historicalPrice: [],
 	currentPrice: null,
 
@@ -32,8 +32,8 @@ const initialState: BtcSlice = {
 	durationFilter: DurationFilterPeriod.DAY,
 };
 
-export const btcSlice = createSlice({
-	name: "btc",
+export const bchSlice = createSlice({
+	name: "bch",
 	initialState,
 	reducers: {
 		setDurationFilter(state, action: PayloadAction<DurationFilterPeriod>) {
@@ -65,18 +65,18 @@ export const btcSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getBtcPriceHistory.fulfilled, (state, action) => {
+		builder.addCase(getBchPriceHistory.fulfilled, (state, action) => {
 			state.historicalPrice = action.payload;
 			state.displayedHistoricalPrice = action.payload.slice(
 				0,
 				3 * DAYS_IN_WEEK
 			);
 		});
-		builder.addCase(getBtcCurrentPrice.fulfilled, (state, action) => {
+		builder.addCase(getBchCurrentPrice.fulfilled, (state, action) => {
 			state.currentPrice = action.payload;
 		});
 	},
 });
 
-export default btcSlice.reducer;
-export const { setDurationFilter } = btcSlice.actions;
+export default bchSlice.reducer;
+export const { setDurationFilter } = bchSlice.actions;

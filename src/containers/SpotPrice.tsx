@@ -2,19 +2,19 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 import SpotPrice from "../components/SpotPrice";
-import { getBtcCurrentPrice } from "../features/btc/btcThunk";
+import { getBchCurrentPrice } from "../features/bch/bchThunk";
 
 const SpotPriceContainer = () => {
-	const btcPrice = useAppSelector(
-		(state: RootState) => state.btcPrices.currentPrice
+	const bchPrice = useAppSelector(
+		(state: RootState) => state.bchPrices.currentPrice
 	);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(getBtcCurrentPrice());
+		dispatch(getBchCurrentPrice());
 	}, []);
 
-	return <SpotPrice price={btcPrice?.price ?? null} />;
+	return <SpotPrice price={bchPrice?.price ?? null} />;
 };
 
 export default SpotPriceContainer;

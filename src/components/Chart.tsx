@@ -1,5 +1,5 @@
 import React from "react";
-import { BtcPrice, DurationFilterPeriod } from "../features/btc/btcSlice";
+import { BchPrice, DurationFilterPeriod } from "../features/bch/bchSlice";
 import {
 	LineChart,
 	Line,
@@ -12,7 +12,7 @@ import {
 import { DateTime } from "luxon";
 
 export type ChartProps = {
-	historicalPrices: BtcPrice[];
+	historicalPrices: BchPrice[];
 	onSetDurationFilter: (duration: DurationFilterPeriod) => void;
 	formatDate: (date: number, index: number) => string;
 };

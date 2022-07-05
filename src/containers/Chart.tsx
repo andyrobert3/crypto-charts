@@ -6,15 +6,15 @@ import Chart from "../components/Chart";
 import {
 	DurationFilterPeriod,
 	setDurationFilter,
-} from "../features/btc/btcSlice";
-import { getBtcPriceHistory } from "../features/btc/btcThunk";
+} from "../features/bch/bchSlice";
+import { getBchPriceHistory } from "../features/bch/bchThunk";
 
 const ChartContainer = () => {
 	const displayedHistoricalPrice = useAppSelector(
-		(state: RootState) => state.btcPrices.displayedHistoricalPrice
+		(state: RootState) => state.bchPrices.displayedHistoricalPrice
 	);
 	const durationFilter = useAppSelector(
-		(state: RootState) => state.btcPrices.durationFilter
+		(state: RootState) => state.bchPrices.durationFilter
 	);
 	const dispatch = useAppDispatch();
 
@@ -44,7 +44,7 @@ const ChartContainer = () => {
 	);
 
 	useEffect(() => {
-		dispatch(getBtcPriceHistory());
+		dispatch(getBchPriceHistory());
 	}, []);
 
 	return (
