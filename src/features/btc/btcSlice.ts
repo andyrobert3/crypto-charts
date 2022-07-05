@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchPriceHistory } from "./btcAPI";
 
+const DAYS_IN_WEEK = 7;
+
 export enum DurationFilterPeriod {
 	DAY = "day",
 	WEEK = "week",
@@ -9,7 +11,8 @@ export enum DurationFilterPeriod {
 
 export type BtcPrice = {
 	price: number;
-	timestamp: string;
+	// milliseconds since epoch
+	timestamp: number;
 };
 
 export interface BtcSlice {
@@ -44,7 +47,9 @@ export const btcSlice = createSlice({
 		setDurationFilter(state, action: PayloadAction<DurationFilterPeriod>) {
 			state.durationFilter = action.payload;
 			if (action.payload === DurationFilterPeriod.DAY) {
-				state.displayedHistoricalPrice = state.historicalPrice;
+				state.displayedHistoricalPrice = state.historicalPrice.slice(
+					-2 * DAYS_IN_WEEK
+				);
 			} else if (action.payload === DurationFilterPeriod.WEEK) {
 				let pricesEveryWeek = [];
 				for (let i = 1; i <= state.historicalPrice.length; i++) {
@@ -69,6 +74,7 @@ export const btcSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(getBtcPriceHistory.fulfilled, (state, action) => {
 			state.historicalPrice = action.payload;
+			state.displayedHistoricalPrice = action.payload.slice(-2 * DAYS_IN_WEEK);
 		});
 	},
 });

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { DateTime } from "luxon";
+import React, { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 import Chart from "../components/Chart";
@@ -12,7 +13,30 @@ const ChartContainer = () => {
 	const displayedHistoricalPrice = useAppSelector(
 		(state: RootState) => state.btcPrices.displayedHistoricalPrice
 	);
+	const durationFilter = useAppSelector(
+		(state: RootState) => state.btcPrices.durationFilter
+	);
 	const dispatch = useAppDispatch();
+
+	const handleSetDurationFilter = useCallback(
+		(duration: DurationFilterPeriod) => {
+			dispatch(setDurationFilter(duration));
+		},
+		[dispatch]
+	);
+
+	const formatDate = useCallback(
+		(date: number) => {
+			if (durationFilter === DurationFilterPeriod.DAY) {
+				return DateTime.fromMillis(date).toFormat("dd");
+			} else if (durationFilter === DurationFilterPeriod.WEEK) {
+				return DateTime.fromMillis(date).toFormat("dd/MM");
+			} else {
+				return DateTime.fromMillis(date).toFormat("MMM");
+			}
+		},
+		[durationFilter]
+	);
 
 	useEffect(() => {
 		dispatch(getBtcPriceHistory());
@@ -20,26 +44,11 @@ const ChartContainer = () => {
 
 	return (
 		<div>
-			<div>
-				<button
-					onClick={() => dispatch(setDurationFilter(DurationFilterPeriod.DAY))}
-				>
-					24 hours
-				</button>
-				<button
-					onClick={() => dispatch(setDurationFilter(DurationFilterPeriod.WEEK))}
-				>
-					7 days
-				</button>
-				<button
-					onClick={() =>
-						dispatch(setDurationFilter(DurationFilterPeriod.MONTH))
-					}
-				>
-					1 month
-				</button>
-			</div>
-			<Chart historicalPrices={displayedHistoricalPrice} />
+			<Chart
+				historicalPrices={displayedHistoricalPrice}
+				onSetDurationFilter={handleSetDurationFilter}
+				formatDate={formatDate}
+			/>
 		</div>
 	);
 };

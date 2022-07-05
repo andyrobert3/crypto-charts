@@ -1,5 +1,5 @@
 import React from "react";
-import { BtcPrice } from "../features/btc/btcSlice";
+import { BtcPrice, DurationFilterPeriod } from "../features/btc/btcSlice";
 import {
 	LineChart,
 	Line,
@@ -7,26 +7,60 @@ import {
 	XAxis,
 	YAxis,
 	Tooltip,
+	Legend,
 } from "recharts";
+import { DateTime } from "luxon";
 
 export type ChartProps = {
 	historicalPrices: BtcPrice[];
+	onSetDurationFilter: (duration: DurationFilterPeriod) => void;
+	formatDate: (date: number) => string;
 };
 
-const Chart = ({ historicalPrices }: ChartProps) => {
+const Chart = ({
+	historicalPrices,
+	onSetDurationFilter,
+	formatDate,
+}: ChartProps) => {
 	return (
-		<LineChart
-			width={1000}
-			height={300}
-			data={historicalPrices}
-			margin={{ top: 5, right: 36, bottom: 5, left: 36 }}
-		>
-			<Line type="monotone" dataKey="price" stroke="#8884d8" />
-			<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-			<XAxis dataKey="timestamp" />
-			<YAxis />
-			<Tooltip />
-		</LineChart>
+		<>
+			<div>
+				<button onClick={() => onSetDurationFilter(DurationFilterPeriod.DAY)}>
+					24 hours
+				</button>
+				<button onClick={() => onSetDurationFilter(DurationFilterPeriod.WEEK)}>
+					7 days
+				</button>
+				<button onClick={() => onSetDurationFilter(DurationFilterPeriod.MONTH)}>
+					1 month
+				</button>
+			</div>
+			<LineChart
+				width={1000}
+				height={450}
+				data={historicalPrices}
+				margin={{ top: 24, right: 36, bottom: 5, left: 36 }}
+			>
+				<Line type="monotone" dataKey="price" stroke="#8884d8" />
+				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<Legend verticalAlign="top" height={36} />
+				<XAxis
+					dataKey="timestamp"
+					domain={["dataMin", "dataMax"]}
+					type="number"
+					scale="time"
+					tickFormatter={formatDate}
+					tick={{ fontSize: 18 }}
+				/>
+				<YAxis tick={{ fontSize: 18 }} />
+				<Tooltip
+					formatter={(value: number) => [`${value} USD`, undefined]}
+					labelFormatter={(label: number) =>
+						DateTime.fromMillis(label).toFormat("dd MMM yyyy")
+					}
+				/>
+			</LineChart>
+		</>
 	);
 };
 
