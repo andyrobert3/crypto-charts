@@ -52,13 +52,11 @@ const ChartContainer = () => {
 	}, []);
 
 	return (
-		<div>
-			<Chart
-				historicalPrices={displayedHistoricalPrice}
-				onSetDurationFilter={handleSetDurationFilter}
-				formatDate={formatDate}
-			/>
-		</div>
+		<Chart
+			historicalPrices={displayedHistoricalPrice}
+			onSetDurationFilter={handleSetDurationFilter}
+			formatDate={formatDate}
+		/>
 	);
 };
 

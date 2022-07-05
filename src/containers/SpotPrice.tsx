@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
@@ -14,7 +15,16 @@ const SpotPriceContainer = () => {
 		dispatch(getBchCurrentPrice());
 	}, []);
 
-	return <SpotPrice price={bchPrice?.price ?? null} />;
+	if (!bchPrice) return null;
+
+	return (
+		<SpotPrice
+			price={bchPrice?.price ?? null}
+			updatedAt={DateTime.fromMillis(bchPrice.timestamp)
+				.toUTC()
+				.toFormat("dd MMM hh:mm")}
+		/>
+	);
 };
 
 export default SpotPriceContainer;
