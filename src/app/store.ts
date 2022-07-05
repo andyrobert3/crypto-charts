@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import bchReducer from "../features/bch/bchSlice";
+import newsReducer from "../features/news/newsSlice";
 
 export const store = configureStore({
 	reducer: {
 		counter: counterReducer,
 		bchPrices: bchReducer,
+		news: newsReducer,
 	},
 });
 

@@ -34,7 +34,7 @@ async function fetchCurrentPrice() {
 	}
 
 	const currentPrice = {
-		timestamp: DateTime.fromISO(response?.data.stamp as string).valueOf(),
+		timestamp: response?.data.stamp,
 		price: response?.data.price as number,
 	};
 
