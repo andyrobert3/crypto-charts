@@ -12,7 +12,11 @@ import { getBchPriceHistory } from "../features/bch/bchThunk";
 const ChartContainer = () => {
 	const displayedHistoricalPrice = useAppSelector(
 		(state: RootState) => state.bchPrices.displayedHistoricalPrice
-	);
+	).map((bchPrice) => ({
+		price: bchPrice.price / 100,
+		timestamp: bchPrice.timestamp,
+	}));
+
 	const durationFilter = useAppSelector(
 		(state: RootState) => state.bchPrices.durationFilter
 	);
