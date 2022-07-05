@@ -26,9 +26,14 @@ const ChartContainer = () => {
 	);
 
 	const formatDate = useCallback(
-		(date: number) => {
+		(date: number, index: number) => {
 			if (durationFilter === DurationFilterPeriod.DAY) {
-				return DateTime.fromMillis(date).toFormat("dd");
+				if ((index + 1) % 2 === 0) {
+					return DateTime.fromMillis(date).toFormat("dd/MM");
+				} else {
+					// Leave gaps between days
+					return "";
+				}
 			} else if (durationFilter === DurationFilterPeriod.WEEK) {
 				return DateTime.fromMillis(date).toFormat("dd/MM");
 			} else {

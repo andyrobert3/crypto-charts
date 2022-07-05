@@ -14,7 +14,7 @@ import { DateTime } from "luxon";
 export type ChartProps = {
 	historicalPrices: BtcPrice[];
 	onSetDurationFilter: (duration: DurationFilterPeriod) => void;
-	formatDate: (date: number) => string;
+	formatDate: (date: number, index: number) => string;
 };
 
 const Chart = ({
@@ -50,9 +50,15 @@ const Chart = ({
 					type="number"
 					scale="time"
 					tickFormatter={formatDate}
-					tick={{ fontSize: 18 }}
+					tick={{ fontSize: 16 }}
 				/>
-				<YAxis tick={{ fontSize: 18 }} />
+				<YAxis
+					tick={{ fontSize: 18 }}
+					domain={[
+						(dataMin: number) => Math.ceil((dataMin * 0.9) / 100) * 100,
+						(dataMax: number) => Math.ceil((dataMax * 1.1) / 100) * 100,
+					]}
+				/>
 				<Tooltip
 					formatter={(value: number) => [`${value} USD`, undefined]}
 					labelFormatter={(label: number) =>
