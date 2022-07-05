@@ -22,4 +22,23 @@ async function fetchPriceHistory() {
 	return priceHistory;
 }
 
-export { fetchPriceHistory };
+async function fetchCurrentPrice() {
+	const url = `${BASE_API_URL}/price/usd`;
+
+	let response;
+
+	try {
+		response = await axios.get(url);
+	} catch (error) {
+		console.error(error);
+	}
+
+	const currentPrice = {
+		timestamp: DateTime.fromISO(response?.data.stamp as string).valueOf(),
+		price: response?.data.price as number,
+	};
+
+	return currentPrice;
+}
+
+export { fetchPriceHistory, fetchCurrentPrice };

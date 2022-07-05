@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchPriceHistory } from "./btcAPI";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getBtcCurrentPrice, getBtcPriceHistory } from "./btcThunk";
 
 const DAYS_IN_WEEK = 7;
 
@@ -31,14 +31,6 @@ const initialState: BtcSlice = {
 	displayedHistoricalPrice: [],
 	durationFilter: DurationFilterPeriod.DAY,
 };
-
-export const getBtcPriceHistory = createAsyncThunk(
-	"btc/getPriceHistory",
-	async () => {
-		const response = await fetchPriceHistory();
-		return response;
-	}
-);
 
 export const btcSlice = createSlice({
 	name: "btc",
@@ -79,6 +71,9 @@ export const btcSlice = createSlice({
 				0,
 				3 * DAYS_IN_WEEK
 			);
+		});
+		builder.addCase(getBtcCurrentPrice.fulfilled, (state, action) => {
+			state.currentPrice = action.payload;
 		});
 	},
 });

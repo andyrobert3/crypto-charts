@@ -5,9 +5,9 @@ import { RootState } from "../app/store";
 import Chart from "../components/Chart";
 import {
 	DurationFilterPeriod,
-	getBtcPriceHistory,
 	setDurationFilter,
 } from "../features/btc/btcSlice";
+import { getBtcPriceHistory } from "../features/btc/btcThunk";
 
 const ChartContainer = () => {
 	const displayedHistoricalPrice = useAppSelector(
